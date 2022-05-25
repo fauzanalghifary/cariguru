@@ -13,31 +13,29 @@ module.exports = {
     */
     let data = [
       {
-        fullName: 'Alberto Gilardino',
-        field: 'Fisika',
-        yearOfExperience: 3,
-        fee: 50000,
+        rating: null,
+        UserId: 1,
+        TeacherId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        fullName: 'Morientes',
-        field: 'Matematika',
-        yearOfExperience: 5,
-        fee: 100000,
+        rating: null,
+        UserId: 1,
+        TeacherId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        fullName: 'Aquilani',
-        field: 'Kimia',
-        yearOfExperience: 1,
-        fee: 40000,
+        rating: null,
+        UserId: 2,
+        TeacherId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+
     ];
-    return queryInterface.bulkInsert('Teachers', data);
+    return queryInterface.bulkInsert('UserTeachers', data);
   },
 
   down(queryInterface, Sequelize) {
@@ -47,6 +45,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return queryInterface.bulkDelete('Teachers');
+    return queryInterface.bulkDelete('UserTeachers');
   }
 };
