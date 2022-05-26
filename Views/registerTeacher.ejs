@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/app.css">
     <title>Document</title>
 </head>
+
 <body>
+
+    <h1 class="main-header">Teacher Registration</h1>
+
     <form action="/registerTeacher" method="post">
         <label>username</label>
         <input type="text" name="user"><br>
@@ -14,18 +20,28 @@
         <input type="password" name="pass"><br>
         <label>Email</label>
         <input type="text" name="email"><br>
-        <label>Nama Lengkap</label>
+        <label>Full Name</label>
         <input type="text" name="fullName"><br>
         <label>Phone Number</label>
         <input type="text" name="phoneNumber"><br>
-        <label>Bidang</label>
-        <input type="text" name="field"><br>
-        <label>Pengalaman</label>
+
+        <label>Field</label>
+        <select name="field" id="field">
+            <option disabled selected value="not">--Choose--</option>
+            <option value="Matematika">Matematika</option>
+            <option value="Fisika">Fisika</option>
+            <option value="Kimia">Kimia</option>
+            <option value="Biologi">Biologi</option>
+        </select><br>
+
+        <label>Experience (year)</label>
         <input type="number" name="yearOfExperience">
-        <label>Tahun</label><br>
-        <label>Biaya/Pertemuan</label>
+        <br>
+        <label>Fee/meeting (rupiah)</label>
         <input type="number" name="fee"><br>
-        <input type="submit" value="Register">
+
+        <input class="button" type="submit" value="Register">
     </form>
 </body>
+
 </html>

@@ -11,13 +11,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      UserDetail.belongsTo(models.User, { foreignKey: "UserId" });
     }
   }
   UserDetail.init({
-    email: DataTypes.STRING,
-    fullName: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    UserId: DataTypes.INTEGER
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'email cannot be empty' }
+      }
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'fullName cannot be empty' }
+      }
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'phoneNumber cannot be empty' }
+      }
+    },
+    UserId: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'UserId cannot be empty' }
+      }
+    },
   }, {
     sequelize,
     modelName: 'UserDetail',

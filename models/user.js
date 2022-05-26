@@ -18,12 +18,34 @@ module.exports = (sequelize, DataTypes) => {
       // User.belongsToMany(models.Teacher, { through: models.UserTeacher });
       User.hasOne(models.UserTeacher, { foreignKey: "UserId" });
       User.hasOne(models.Teacher, { foreignKey: "UserId" });
+      User.hasOne(models.UserDetail, { foreignKey: "UserId" });
     }
   }
   User.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.STRING
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'username cannot be empty' }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'password cannot be empty' }
+      }
+    },
+    role: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'role cannot be empty' }
+      }
+    },
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'status cannot be empty' }
+      }
+    },
   }, {
     sequelize,
     modelName: 'User',

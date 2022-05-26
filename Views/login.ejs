@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/app.css">
     <title>Document</title>
 </head>
+
 <body>
+
+    <h1 class="main-header">Login</h1>
+
     <% if (error) { %>
-     <p style="color:red"><%= error %> </p>
+    <p style="color:red"><%= error %> </p>
     <% } %>
     <form action="/login" method="post">
         <label>username</label>
         <input type="text" name="user"><br>
         <label>password</label>
         <input type="password" name="pass"><br>
-        <input type="submit" value="Login">
+        <input class="button" type="submit" value="Login">
     </form>
 </body>
+
 </html>
