@@ -10,6 +10,9 @@
 </head>
 
 <body>
+
+    <h1 class="main-header">Login</h1>
+
     <% if (error) { %>
     <p style="color:red"><%= error %> </p>
     <% } %>
@@ -18,7 +21,7 @@
         <input type="text" name="user"><br>
         <label>password</label>
         <input type="password" name="pass"><br>
-        <input type="submit" value="Login">
+        <input class="button" type="submit" value="Login">
     </form>
 </body>
 

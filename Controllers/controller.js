@@ -1,6 +1,5 @@
 const { Teacher, User, UserTeacher, UserDetail } = require('../models');
 const formatDate = require('../helpers/formatDate');
-const formatRupiah = require('../helpers/formatRupiah');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 
@@ -160,6 +159,9 @@ class Controller {
                 res.redirect('/login');
             })
             .catch(err => {
+                if (err.name === 'SequelizeValidationError') {
+                    err = err.errors.map(el => el.message);
+                }
                 res.send(err);
             });
     }
@@ -297,7 +299,7 @@ class Controller {
         Teacher.findAll(option)
             .then(teachers => {
                 // console.log(teachers);
-                res.render('findTeachers', { teachers, formatRupiah, user, field, sort });
+                res.render('findTeachers', { teachers, user, field, sort });
             })
             .catch(err => {
                 console.log(err);

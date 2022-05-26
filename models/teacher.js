@@ -15,13 +15,43 @@ module.exports = (sequelize, DataTypes) => {
       Teacher.hasOne(models.UserTeacher, { foreignKey: "TeacherId" });
       Teacher.belongsTo(models.User, { foreignKey: "UserId" });
     }
+
+    formatRupiah() {
+      return this.fee.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
+    }
   }
   Teacher.init({
-    fullName: DataTypes.STRING,
-    field: DataTypes.STRING,
-    yearOfExperience: DataTypes.INTEGER,
-    fee: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER
+    fullName: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'fullName cannot be empty' }
+      }
+    },
+    field: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'field cannot be empty' },
+      },
+
+    },
+    yearOfExperience: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: { msg: 'yearOfExperience cannot be empty' }
+      }
+    },
+    fee: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: { msg: 'fee cannot be empty' }
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: { msg: 'UserId cannot be empty' }
+      }
+    },
   }, {
     sequelize,
     modelName: 'Teacher',
