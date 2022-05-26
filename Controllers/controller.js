@@ -7,7 +7,7 @@ class Controller {
 
 
     static landingPage(req, res) {
-        res.render('landingPage');
+        res.render('landingpage');
     }
 
     static register(req, res) {
