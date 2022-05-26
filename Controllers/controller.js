@@ -1,13 +1,82 @@
-const { Teacher, User, UserTeacher } = require('../models');
+const { Teacher, User, UserTeacher, UserDetail } = require('../models');
 const formatDate = require('../helpers/formatDate');
 const formatRupiah = require('../helpers/formatRupiah');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
 class Controller {
 
 
     static register(req, res){
         res.render('register')
+    }
+
+    static registerStudent(req, res){
+        res.render('registerStudent')
+    }
+
+    static insertStudent(req, res){
+        User.create({
+            username: req.body.user,
+            password: req.body.pass,
+            role: 'student',
+            createdAt: new Date(),
+            updatedAt: new Date,
+            status: 'inactive'
+        })
+            .then(newUser=>{
+                UserDetail.create({
+                    email: req.body.email,
+                    fullName: req.body.fullName,
+                    phoneNumber: req.body.phoneNumber,
+                    UserId: newUser.id
+                })
+            })
+            .then(()=>{
+                res.redirect('/login')
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+    }
+
+    static registerTeacher(req, res){
+        res.render('registerTeacher')
+    }
+
+    static insertTeacher(req, res){
+        User.create({
+            username: req.body.user,
+            password: req.body.pass,
+            role: 'teacher',
+            createdAt: new Date(),
+            updatedAt: new Date,
+            status: 'inactive'
+        })
+            .then(newUser=>{
+                UserDetail.create({
+                    email: req.body.email,
+                    fullName: req.body.fullName,
+                    phoneNumber: req.body.phoneNumber,
+                    UserId: newUser.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date,
+                })
+                Teacher.create({
+                    fullName: req.body.fullName,
+                    field: req.body.field,
+                    yearOfExperience: req.body.yearOfExperience,
+                    fee: req.body.fee,
+                    UserId: newUser.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date,
+                })
+            })
+            .then(()=>{
+                res.redirect('/login')
+            })
+            .catch(err=>{
+                res.send(err)
+            })
     }
 
     static insertUser(req, res){
