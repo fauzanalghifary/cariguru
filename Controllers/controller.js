@@ -98,27 +98,32 @@ class Controller {
                 if (user) {
                     if (bcrypt.compareSync(req.body.pass, user.password)) {
                         // console.log(user.id);
-                        console.log('hereeee');
-                        req.session.userId = user.id;
-                        req.session.user = user.username;
-                        req.session.role = user.role;
-                        if (user.role === "student") {
-                            res.redirect(`/studentCard`);
-                        } else if (user.role === "teacher") {
-                            Teacher.findOne({
-                                where: {
-                                    UserId: user.id
-                                }
-                            })
-                                .then(teacher => {
-                                    console.log('masuk teacher');
-                                    // console.log(teacher);
-                                    req.session.teacherId = teacher.id;
-                                    res.redirect(`/teacherCard`);
+                        if(user.status==='active'){
+                            console.log('hereeee');
+                            req.session.userId = user.id;
+                            req.session.user = user.username;
+                            req.session.role = user.role;
+                            if (user.role === "student") {
+                                res.redirect(`/studentCard`);
+                            } else if (user.role === "teacher") {
+                                Teacher.findOne({
+                                    where: {
+                                        UserId: user.id
+                                    }
                                 })
-                                .catch(err => {
-                                    res.send(err);
-                                });
+                                    .then(teacher => {
+                                        console.log('masuk teacher');
+                                        console.log(teacher);
+                                        req.session.teacherId = teacher.id;
+                                        res.redirect(`/teacherCard`);
+                                    })
+                                    .catch(err => {
+                                        res.send(err);
+                                    });
+                            }
+                        }else{
+                            let error = 'User belum terverifikasi';
+                            res.redirect(`/login?error=${error}`);
                         }
                     } else {
                         let error = 'Password salah';
