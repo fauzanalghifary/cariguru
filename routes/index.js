@@ -16,6 +16,8 @@ router.post('/login', Controller.sessionMake);
 //     }
 // })
 
+router.get('/verify/:identifier', Controller.verify);
+
 
 router.get('/studentCard', Controller.studentCard);
 router.get('/findTeachers', Controller.findTeachers);

@@ -2,6 +2,7 @@ const { Teacher, User, UserTeacher } = require('../models');
 const formatDate = require('../helpers/formatDate');
 const formatRupiah = require('../helpers/formatRupiah');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 
 class Controller {
 
@@ -18,10 +19,63 @@ class Controller {
             createdAt: new Date(),
             updatedAt: new Date
         })
+            .then((data) => {
+                // console.log(data);
+                let rand = Math.floor((Math.random() * 999999) + 54);
+                // console.log(rand);
+
+                let identifier = data.id + '-' + rand;
+                // console.log(identifier);
+
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'pojandummy@gmail.com',
+                        pass: 'pojan123'
+                    }
+                });
+
+                var mailOptions = {
+                    from: 'pojandummy@gmail.com',
+                    to: 'fafauzanfz@gmail.com',
+                    subject: 'Sending Email using Node.js',
+                    html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+
+            })
             .then(() => res.redirect('/login'))
             .catch(err => {
                 res.send(err);
             });
+    }
+
+    static verify(req, res) {
+        const identifier = req.params.identifier;
+        let id = +identifier.split('-')[0];
+
+
+        User.update({
+            status: 'active'
+        }, {
+            where: {
+                id: +id
+            }
+        })
+            .then(() => {
+                res.redirect('/login');
+            })
+            .catch(err => {
+                res.send(err);
+            });
+
     }
 
     static login(req, res) {
