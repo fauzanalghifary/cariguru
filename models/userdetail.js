@@ -15,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   UserDetail.init({
-    email: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: { msg: 'email cannot be empty' }
-      }
-    },
     fullName: {
       type: DataTypes.STRING,
       validate: {

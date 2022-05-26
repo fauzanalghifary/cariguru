@@ -18,6 +18,7 @@ class Controller {
         User.create({
             username: req.body.user,
             password: req.body.pass,
+            email: req.body.email,
             role: 'student',
             createdAt: new Date(),
             updatedAt: new Date,
@@ -25,7 +26,6 @@ class Controller {
         })
             .then(newUser => {
                 return UserDetail.create({
-                    email: req.body.email,
                     fullName: req.body.fullName,
                     phoneNumber: req.body.phoneNumber,
                     UserId: newUser.id
@@ -92,6 +92,7 @@ class Controller {
             username: req.body.user,
             password: req.body.pass,
             role: 'teacher',
+            email: req.body.email,
             createdAt: new Date(),
             updatedAt: new Date,
             status: 'inactive'
@@ -99,7 +100,6 @@ class Controller {
             .then(newUser => {
                 theNewUser = newUser;
                 return UserDetail.create({
-                    email: req.body.email,
                     fullName: req.body.fullName,
                     phoneNumber: req.body.phoneNumber,
                     UserId: newUser.id,
