@@ -63,7 +63,7 @@ class Controller {
                     from: 'admin@cariguru.com',
                     to: `${email}`,
                     subject: 'Verifikasi CariGuru',
-                    html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
+                    html: `Press <a href=http://cariguru-v3.herokuapp.com/verify/${identifier}>this link</a> to verify your email`
                 };
 
                 transporter.sendMail(mailOptions, function (error, info) {
@@ -156,7 +156,7 @@ class Controller {
                     from: 'admin@cariguru.com',
                     to: `${email}`,
                     subject: 'Verifikasi CariGuru',
-                    html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
+                    html: `Press <a href=http://cariguru-v3.herokuapp.com/verify/${identifier}>this link</a> to verify your email`
                 };
 
                 transporter.sendMail(mailOptions, function (error, info) {
