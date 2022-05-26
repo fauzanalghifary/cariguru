@@ -6,8 +6,8 @@ const bcrypt = require('bcryptjs');
 class Controller {
 
 
-    static register(req, res){
-        res.render('register')
+    static register(req, res) {
+        res.render('register');
     }
 
     static registerStudent(req, res){
@@ -79,70 +79,59 @@ class Controller {
             })
     }
 
-    static insertUser(req, res){
-        User.create({
-            username: req.body.user,
-            password: req.body.pass,
-            role: req.body.role,
-            createdAt: new Date(),
-            updatedAt: new Date
-        })
-            .then(()=>res.redirect('/login'))
-            .catch(err=>{
-                res.send(err)
-            })
-    }
 
-    static login(req, res){
-        let error
-        if(req.query.error){
-            error = req.query.error
+    static login(req, res) {
+        let error;
+        if (req.query.error) {
+            error = req.query.error;
         }
-        res.render('login', {error})
+        res.render('login', { error });
     }
 
-    static sessionMake(req, res){
+    static sessionMake(req, res) {
         User.findOne({
-            where:{
+            where: {
                 username: req.body.user
             }
         })
-            .then(user=>{
-                if(user){
-                    if(bcrypt.compareSync(req.body.pass, user.password)){
-                        console.log(user.id)
-                        req.session.userId = user.id
-                        req.session.user = user.username
-                        req.session.role = user.role
-                        if(user.role==="student"){
-                            res.redirect(`/studentCard`)
-                        }else if(user.role==="teacher"){
+            .then(user => {
+                if (user) {
+                    if (bcrypt.compareSync(req.body.pass, user.password)) {
+                        // console.log(user.id);
+                        console.log('hereeee');
+                        req.session.userId = user.id;
+                        req.session.user = user.username;
+                        req.session.role = user.role;
+                        if (user.role === "student") {
+                            res.redirect(`/studentCard`);
+                        } else if (user.role === "teacher") {
                             Teacher.findOne({
-                                where:{
-                                    UserId: user.Id
+                                where: {
+                                    UserId: user.id
                                 }
                             })
-                            .then(teacher=>{
-                                    console.log('masuk teacher')
-                                    req.session.teacherId = teacher.id
-                                    res.redirect(`/teacherCard`)
+                                .then(teacher => {
+                                    console.log('masuk teacher');
+                                    // console.log(teacher);
+                                    req.session.teacherId = teacher.id;
+                                    res.redirect(`/teacherCard`);
                                 })
-                                .catch(err=>{
-                                    res.send(err)
-                                })
+                                .catch(err => {
+                                    res.send(err);
+                                });
                         }
-                    }else{
-                        let error = 'Password salah'
-                        res.redirect(`/login?error=${error}`)
+                    } else {
+                        let error = 'Password salah';
+                        res.redirect(`/login?error=${error}`);
                     }
-                }else{
-                    let error = 'User tidak terdaftar'
-                    res.redirect(`/login?error=${error}`)
+                } else {
+                    let error = 'User tidak terdaftar';
+                    res.redirect(`/login?error=${error}`);
                 }
             })
-            .catch(err=>{
-                res.send(err)
-            })
+            .catch(err => {
+                res.send(err);
+            });
     }
 
     static studentCard(req, res) {
@@ -170,9 +159,9 @@ class Controller {
             });
     }
 
-    static logout(req, res){
-        req.session.destroy()
-        res.redirect('login')
+    static logout(req, res) {
+        req.session.destroy();
+        res.redirect('/login');
     }
 
     static findTeachers(req, res) {
@@ -181,7 +170,7 @@ class Controller {
 
         let option = {};
         let { field, sort } = req.query;
-        let { user } = req.session
+        let { user } = req.session;
         // console.log(sort);
         if (field) {
             option.where = {
@@ -210,14 +199,16 @@ class Controller {
     }
 
     static getHireTeacher(req, res) {
-        let teacherId = +req.session.teacherId;
-        let userId = req.query.userId;
+        let teacherId = +req.params.teacherId;
+        console.log(teacherId);
+        let userId = +req.session.userId;
 
         Teacher.findByPk(teacherId)
             .then(teacher => {
                 res.render('hireTeacher', { teacher, userId });
             })
             .catch(err => {
+                console.log(err);
                 res.send(err);
             });
     }
@@ -225,13 +216,13 @@ class Controller {
     static postHireTeacher(req, res) {
         // console.log(req.body);
         ;
-        let UserId = +req.query.userId;
+        let UserId = +req.session.userId;
         let TeacherId = +req.params.teacherId;
         let date = req.body.date;
 
         UserTeacher.create({ date, TeacherId, UserId })
             .then(() => {
-                res.redirect(`/studentCard/${UserId}`);
+                res.redirect(`/studentCard/`);
             })
             .catch(err => {
                 if (err.name === 'SequelizeValidationError') {
@@ -243,7 +234,8 @@ class Controller {
     }
 
     static teacherCard(req, res) {
-        let userId = req.session.userId;
+        let teacherId = +req.session.teacherId;
+        // let teacherId = 1;
         let userTeachers;
 
         UserTeacher.findAll({
@@ -280,17 +272,14 @@ class Controller {
                     }
                 });
             })
-            .then((data2) => {
-                // console.log(data2);
-                let teacherId = data2.TeacherId;
-                res.redirect(`/teacherCard/${teacherId}`);
+            .then(() => {
+                res.redirect(`/teacherCard`);
             });
 
     }
 
     static reject(req, res) {
         let id = +req.params.id;
-
         UserTeacher.findByPk(id)
             .then(data => {
                 return data.update({
@@ -301,10 +290,8 @@ class Controller {
                     }
                 });
             })
-            .then((data2) => {
-                // console.log(data2);
-                let teacherId = data2.TeacherId;
-                res.redirect(`/teacherCard/${teacherId}`);
+            .then(() => {
+                res.redirect(`/teacherCard/`);
             });
     }
 
