@@ -23,6 +23,7 @@
             <th>Field</th>
             <th>Date</th>
             <th>Status</th>
+            <th>Action</th>
         </thead>
 
         <tbody>
@@ -33,6 +34,9 @@
                 <td><%= el.Teacher.field %> </td>
                 <td><%= formatDate(el.date) %> </td>
                 <td><%= el.status %> </td>
+                <td>
+                    <a class="button" href="/cancel/<%= el.id %> ">Cancel</a>
+                </td>
             </tr>
             <% }) %>
         </tbody>

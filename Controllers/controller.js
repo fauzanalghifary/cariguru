@@ -15,6 +15,7 @@ class Controller {
     }
 
     static insertStudent(req, res) {
+        let theUser;
         User.create({
             username: req.body.user,
             password: req.body.pass,
@@ -25,16 +26,11 @@ class Controller {
             status: 'inactive'
         })
             .then(newUser => {
+                theUser = newUser;
                 return UserDetail.create({
                     fullName: req.body.fullName,
                     phoneNumber: req.body.phoneNumber,
                     UserId: newUser.id
-                });
-            })
-            .then((userDetails) => {
-                // console.log(userDetails.UserId);
-                return User.findByPk(userDetails.UserId, {
-                    include: UserDetail
                 });
             })
             .then((user) => {
@@ -42,8 +38,8 @@ class Controller {
                 let rand = Math.floor((Math.random() * 999999) + 54);
                 // console.log(rand);
 
-                let identifier = user.id + '-' + rand;
-                let email = user.UserDetail.email;
+                let identifier = theUser.id + '-' + rand;
+                let email = theUser.email;
                 // console.log(identifier);
 
                 var transporter = nodemailer.createTransport({
@@ -55,9 +51,9 @@ class Controller {
                 });
 
                 var mailOptions = {
-                    from: 'pojandummy@gmail.com',
+                    from: 'admin@cariguru.com',
                     to: `${email}`,
-                    subject: 'Sending Email using Node.js',
+                    subject: 'Verifikasi CariGuru',
                     html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
                 };
 
@@ -68,7 +64,6 @@ class Controller {
                         console.log('Email sent: ' + info.response);
                     }
                 });
-
             })
             .then(() => {
                 res.redirect('/login');
@@ -120,9 +115,7 @@ class Controller {
             })
             .then((teacher) => {
                 // console.log(teacher);
-                return User.findByPk(teacher.UserId, {
-                    include: UserDetail
-                });
+                return User.findByPk(teacher.UserId);
             })
             .then((user) => {
                 // console.log(user);
@@ -130,7 +123,7 @@ class Controller {
                 // console.log(rand);
 
                 let identifier = user.id + '-' + rand;
-                let email = user.UserDetail.email;
+                let email = user.email;
                 // console.log(identifier);
 
                 var transporter = nodemailer.createTransport({
@@ -167,24 +160,26 @@ class Controller {
             });
     }
 
-    static cancelAppointment(req, res){
+    static cancelAppointment(req, res) {
         UserTeacher.destroy({
-            where:{
+            where: {
                 id: req.params.id
             }
         })
-            .then(()=>{
-                res.redirect('/studentCard')
+            .then(() => {
+                res.redirect('/studentCard');
             })
-            .catch(err=>{
-                res.send(err)
-            })
+            .catch(err => {
+                res.send(err);
+            });
     }
 
     static verify(req, res) {
         const identifier = req.params.identifier;
         let id = +identifier.split('-')[0];
 
+        // console.log(id);
+        // console.log('HEREEEEEEEEE');
 
         User.update({
             status: 'active'
@@ -300,7 +295,7 @@ class Controller {
         let { user } = req.session;
         // console.log(sort);
 
-        Teacher.getTeacherByField(field)
+        Teacher.getTeacherByField(field, sort)
             .then(teachers => {
                 // console.log(teachers);
                 res.render('findTeachers', { teachers, user, field, sort });

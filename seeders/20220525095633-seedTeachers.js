@@ -30,6 +30,33 @@ module.exports = {
         updatedAt: new Date(),
         UserId: 4
       },
+      {
+        fullName: 'Adebayor',
+        field: 'Biologi',
+        yearOfExperience: 2,
+        fee: 65900,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        UserId: 5
+      },
+      {
+        fullName: 'Woodgate',
+        field: 'Kimia',
+        yearOfExperience: 1,
+        fee: 120000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        UserId: 6
+      },
+      {
+        fullName: 'Kanu',
+        field: 'Matematika',
+        yearOfExperience: 3,
+        fee: 35000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        UserId: 7
+      },
     ];
     return queryInterface.bulkInsert('Teachers', data);
   },

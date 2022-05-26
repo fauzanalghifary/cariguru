@@ -4,7 +4,6 @@ module.exports = {
   up(queryInterface, Sequelize) {
     let data = [
       {
-        rating: null,
         status: 'pending',
         date: new Date('27 May 2022'),
         UserId: 5,
@@ -13,7 +12,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        rating: null,
         status: 'pending',
         date: new Date('27 May 2022'),
         UserId: 6,
@@ -22,7 +20,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        rating: null,
         status: 'pending',
         date: new Date('28 May 2022'),
         UserId: 6,

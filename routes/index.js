@@ -10,6 +10,7 @@ router.get('/registerTeacher', Controller.registerTeacher);
 router.post('/registerTeacher', Controller.insertTeacher);
 router.get('/login', Controller.login);
 router.post('/login', Controller.sessionMake);
+router.get('/verify/:identifier', Controller.verify);
 
 router.use((req, res, next) => {
     if (!req.session.user) {
@@ -20,14 +21,14 @@ router.use((req, res, next) => {
     }
 });
 
-router.get('/verify/:identifier', Controller.verify);
-
 
 router.get('/studentCard', Controller.studentCard);
 router.get('/findTeachers', Controller.findTeachers);
 
 router.get('/hireTeacher/:teacherId', Controller.getHireTeacher);
 router.post('/hireTeacher/:teacherId', Controller.postHireTeacher);
+
+router.get('/cancel/:id', Controller.cancelAppointment);
 
 router.get('/teacherCard/', Controller.teacherCard);
 

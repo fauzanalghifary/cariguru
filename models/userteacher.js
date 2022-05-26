@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    rating: DataTypes.INTEGER,
     date: {
       type: DataTypes.DATE,
       allowNull: false,
