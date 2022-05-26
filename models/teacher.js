@@ -19,6 +19,26 @@ module.exports = (sequelize, DataTypes) => {
     formatRupiah() {
       return this.fee.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
     }
+
+    static getTeacherByField(field, sort) {
+      let option = {};
+      if (field) {
+        option.where = {
+          field: field
+        };
+      }
+
+      if (sort === 'fee') {
+        option.order = [['fee', 'ASC']];
+      }
+
+      if (sort === 'experience') {
+        option.order = [['yearOfExperience', 'DESC']];
+      }
+
+
+      return Teacher.findAll(option);
+    }
   }
   Teacher.init({
     fullName: {

@@ -207,7 +207,7 @@ class Controller {
                 if (user) {
                     if (bcrypt.compareSync(req.body.pass, user.password)) {
                         // console.log(user.id);
-                        if(user.status==='active'){
+                        if (user.status === 'active') {
                             console.log('hereeee');
                             req.session.userId = user.id;
                             req.session.user = user.username;
@@ -230,7 +230,7 @@ class Controller {
                                         res.send(err);
                                     });
                             }
-                        }else{
+                        } else {
                             let error = 'User belum terverifikasi';
                             res.redirect(`/login?error=${error}`);
                         }
@@ -282,26 +282,11 @@ class Controller {
         // console.log(req.query);
         // let userId = +req.query.user;
 
-        let option = {};
         let { field, sort } = req.query;
         let { user } = req.session;
         // console.log(sort);
-        if (field) {
-            option.where = {
-                field: field
-            };
-        }
 
-        if (sort === 'fee') {
-            option.order = [['fee', 'ASC']];
-        }
-
-        if (sort === 'experience') {
-            option.order = [['yearOfExperience', 'DESC']];
-        }
-
-
-        Teacher.findAll(option)
+        Teacher.getTeacherByField(field)
             .then(teachers => {
                 // console.log(teachers);
                 res.render('findTeachers', { teachers, user, field, sort });
@@ -317,9 +302,11 @@ class Controller {
         console.log(teacherId);
         let userId = +req.session.userId;
 
+        let error = req.query.error;
+
         Teacher.findByPk(teacherId)
             .then(teacher => {
-                res.render('hireTeacher', { teacher, userId });
+                res.render('hireTeacher', { teacher, userId, error });
             })
             .catch(err => {
                 console.log(err);
@@ -343,7 +330,8 @@ class Controller {
                     err = err.errors.map(el => el.message);
                 }
                 // console.log(err);
-                res.send(err);
+                // res.send(err);
+                res.redirect(`/hireTeacher/${TeacherId}?error=${err}`);
             });
     }
 
