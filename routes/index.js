@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Controller = require('../Controllers/controller');
 
 router.get('/',);
-router.get('/register',);
+router.get('/register', Controller.register);
 router.post('/register',);
 router.get('/login',);
 router.post('/login',);

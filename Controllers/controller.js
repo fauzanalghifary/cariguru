@@ -5,6 +5,10 @@ const formatRupiah = require('../helpers/formatRupiah');
 class Controller {
 
 
+    static register(req, res){
+        res.render('register')
+    }
+
     static studentCard(req, res) {
         let userId = +req.params.userId;
 
@@ -13,7 +17,7 @@ class Controller {
         })
             .then(user => {
                 // console.log(user.Teachers);
-                console.log(user.Teachers[0].UserTeacher); //array
+                console.log(JSON.stringify(user, null, 2)); //array
                 // console.log(user.Teachers.UserTeacher); //undefined
                 // user.Teachers.forEach(el => {
                 // console.log(el.UserTeacher);
