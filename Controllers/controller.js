@@ -1,4 +1,4 @@
-const { Teacher, User, UserTeacher } = require('../models');
+const { Teacher, User, UserTeacher, UserDetail } = require('../models');
 const formatDate = require('../helpers/formatDate');
 const formatRupiah = require('../helpers/formatRupiah');
 const bcrypt = require('bcryptjs');
@@ -11,72 +11,75 @@ class Controller {
         res.render('register');
     }
 
-    static insertUser(req, res) {
+    static registerStudent(req, res) {
+        res.render('registerStudent');
+    }
+
+    static insertStudent(req, res) {
         User.create({
             username: req.body.user,
             password: req.body.pass,
-            role: req.body.role,
+            role: 'student',
             createdAt: new Date(),
-            updatedAt: new Date
+            updatedAt: new Date,
+            status: 'inactive'
         })
-            .then((data) => {
-                // console.log(data);
-                let rand = Math.floor((Math.random() * 999999) + 54);
-                // console.log(rand);
-
-                let identifier = data.id + '-' + rand;
-                // console.log(identifier);
-
-                var transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: 'pojandummy@gmail.com',
-                        pass: 'pojan123'
-                    }
+            .then(newUser => {
+                UserDetail.create({
+                    email: req.body.email,
+                    fullName: req.body.fullName,
+                    phoneNumber: req.body.phoneNumber,
+                    UserId: newUser.id
                 });
-
-                var mailOptions = {
-                    from: 'pojandummy@gmail.com',
-                    to: 'fafauzanfz@gmail.com',
-                    subject: 'Sending Email using Node.js',
-                    html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
-                };
-
-                transporter.sendMail(mailOptions, function (error, info) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log('Email sent: ' + info.response);
-                    }
-                });
-
             })
-            .then(() => res.redirect('/login'))
-            .catch(err => {
-                res.send(err);
-            });
-    }
-
-    static verify(req, res) {
-        const identifier = req.params.identifier;
-        let id = +identifier.split('-')[0];
-
-
-        User.update({
-            status: 'active'
-        }, {
-            where: {
-                id: +id
-            }
-        })
             .then(() => {
                 res.redirect('/login');
             })
             .catch(err => {
                 res.send(err);
             });
-
     }
+
+    static registerTeacher(req, res) {
+        res.render('registerTeacher');
+    }
+
+    static insertTeacher(req, res) {
+        User.create({
+            username: req.body.user,
+            password: req.body.pass,
+            role: 'teacher',
+            createdAt: new Date(),
+            updatedAt: new Date,
+            status: 'inactive'
+        })
+            .then(newUser => {
+                UserDetail.create({
+                    email: req.body.email,
+                    fullName: req.body.fullName,
+                    phoneNumber: req.body.phoneNumber,
+                    UserId: newUser.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date,
+                });
+                Teacher.create({
+                    fullName: req.body.fullName,
+                    field: req.body.field,
+                    yearOfExperience: req.body.yearOfExperience,
+                    fee: req.body.fee,
+                    UserId: newUser.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date,
+                });
+            })
+            .then(() => {
+                res.redirect('/login');
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    }
+
 
     static login(req, res) {
         let error;

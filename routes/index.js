@@ -1,9 +1,13 @@
 const router = require('express').Router();
+const { register } = require('../Controllers/controller');
 const Controller = require('../Controllers/controller');
 
 router.get('/',);
 router.get('/register', Controller.register);
-router.post('/register', Controller.insertUser);
+router.get('/registerStudent', Controller.registerStudent)
+router.post('/registerStudent', Controller.insertStudent)
+router.get('/registerTeacher', Controller. registerTeacher)
+router.post('/registerTeacher', Controller.insertTeacher)
 router.get('/login', Controller.login);
 router.post('/login', Controller.sessionMake);
 
