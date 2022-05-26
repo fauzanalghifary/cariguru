@@ -6,12 +6,21 @@ const nodemailer = require('nodemailer');
 class Controller {
 
 
+    static landingPage(req, res) {
+        res.render('landingPage');
+    }
+
     static register(req, res) {
         res.render('register');
     }
 
     static registerStudent(req, res) {
-        res.render('registerStudent');
+        let error;
+        // console.log(req.query);
+        if (req.query.error) {
+            error = req.query.error.split(',');
+        }
+        res.render('registerStudent', { error });
     }
 
     static insertStudent(req, res) {
@@ -70,13 +79,22 @@ class Controller {
             })
             .catch(err => {
                 // console.log(err);
-
-                res.send(err);
+                // res.send(err);
+                if (err.name === 'SequelizeValidationError') {
+                    err = err.errors.map(el => el.message);
+                }
+                res.redirect(`/registerStudent?error=${err}`);
             });
     }
 
     static registerTeacher(req, res) {
-        res.render('registerTeacher');
+
+        let error;
+        console.log(req.query);
+        if (req.query.error) {
+            error = req.query.error.split(',');
+        }
+        res.render('registerTeacher', { error });
     }
 
     static insertTeacher(req, res) {
@@ -153,10 +171,12 @@ class Controller {
                 res.redirect('/login');
             })
             .catch(err => {
+                // console.log(err);
+                // res.send(err);
                 if (err.name === 'SequelizeValidationError') {
                     err = err.errors.map(el => el.message);
                 }
-                res.send(err);
+                res.redirect(`/registerTeacher?error=${err}`);
             });
     }
 

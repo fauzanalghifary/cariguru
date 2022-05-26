@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { register } = require('../Controllers/controller');
 const Controller = require('../Controllers/controller');
 
-router.get('/',);
+router.get('/', Controller.landingPage);
 router.get('/register', Controller.register);
 router.get('/registerStudent', Controller.registerStudent);
 router.post('/registerStudent', Controller.insertStudent);

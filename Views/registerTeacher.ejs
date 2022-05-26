@@ -13,6 +13,14 @@
 
     <h1 class="main-header">Teacher Registration</h1>
 
+    <% if (error) { %>
+    <ul class="red-color">
+        <% error.forEach(el => { %>
+        <li><%= el %> </li>
+        <% }) %>
+    </ul>
+    <% } %>
+
     <form action="/registerTeacher" method="post">
         <label>username</label>
         <input type="text" name="user"><br>
