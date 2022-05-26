@@ -5,8 +5,8 @@ const router = require('./routes/index');
 const session = require('express-session');
 var path = require('path');
 
+app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use(session({
