@@ -7,18 +7,23 @@ class Controller {
 
     static studentCard(req, res) {
         let userId = +req.params.userId;
+        console.log(userId);
+        let userTeachers;
 
-        User.findByPk(userId, {
-            include: Teacher
+        UserTeacher.findAll({
+            include: Teacher,
+            where: {
+                UserId: userId
+            }
         })
-            .then(user => {
-                // console.log(user.Teachers);
-                console.log(user.Teachers[0].UserTeacher); //array
-                // console.log(user.Teachers.UserTeacher); //undefined
-                // user.Teachers.forEach(el => {
-                // console.log(el.UserTeacher);
-                // });
-                res.render('studentCard', { user, formatDate });
+            .then(UserTeachers => {
+                // console.log(UserTeachers);
+                userTeachers = UserTeachers;
+                return User.findByPk(userId);
+
+            })
+            .then((user) => {
+                res.render('studentCard', { userTeachers, user, formatDate });
             })
             .catch(err => {
                 // console.log(err);
@@ -94,14 +99,22 @@ class Controller {
 
     static teacherCard(req, res) {
         let teacherId = +req.params.teacherId;
+        let userTeachers;
 
-        Teacher.findByPk(teacherId, {
-            include: User
+        UserTeacher.findAll({
+            include: User,
+            where: {
+                TeacherId: teacherId
+            },
+            order: [['id', 'ASC']]
         })
-            .then(teacher => {
-                // console.log(teacher.Users[1].UserTeacher);
-                // console.log(teacher.Users[0].UserTeacher.dataValues);
-                res.render('teacherCard', { teacher, formatDate });
+            .then(UserTeachers => {
+                userTeachers = UserTeachers;
+                return Teacher.findByPk(teacherId);
+            })
+            .then((teacher) => {
+                // console.log(userTeachers);
+                res.render('teacherCard', { userTeachers, teacher, formatDate });
             })
             .catch(err => {
                 console.log(err);
