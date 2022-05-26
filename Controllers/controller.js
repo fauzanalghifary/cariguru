@@ -167,6 +167,19 @@ class Controller {
             });
     }
 
+    static cancelAppointment(req, res){
+        UserTeacher.destroy({
+            where:{
+                id: req.params.id
+            }
+        })
+            .then(()=>{
+                res.redirect('/studentCard')
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+    }
 
     static verify(req, res) {
         const identifier = req.params.identifier;
