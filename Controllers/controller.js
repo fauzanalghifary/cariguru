@@ -25,17 +25,57 @@ class Controller {
             status: 'inactive'
         })
             .then(newUser => {
-                UserDetail.create({
+                return UserDetail.create({
                     email: req.body.email,
                     fullName: req.body.fullName,
                     phoneNumber: req.body.phoneNumber,
                     UserId: newUser.id
                 });
             })
+            .then((userDetails) => {
+                // console.log(userDetails.UserId);
+                return User.findByPk(userDetails.UserId, {
+                    include: UserDetail
+                });
+            })
+            .then((user) => {
+                // console.log(user);
+                let rand = Math.floor((Math.random() * 999999) + 54);
+                // console.log(rand);
+
+                let identifier = user.id + '-' + rand;
+                let email = user.UserDetail.email;
+                // console.log(identifier);
+
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'pojandummy@gmail.com',
+                        pass: 'pojan123'
+                    }
+                });
+
+                var mailOptions = {
+                    from: 'pojandummy@gmail.com',
+                    to: `${email}`,
+                    subject: 'Sending Email using Node.js',
+                    html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+
+            })
             .then(() => {
                 res.redirect('/login');
             })
             .catch(err => {
+                console.log(err);
                 res.send(err);
             });
     }
@@ -45,6 +85,9 @@ class Controller {
     }
 
     static insertTeacher(req, res) {
+
+        let theNewUser;
+
         User.create({
             username: req.body.user,
             password: req.body.pass,
@@ -54,7 +97,8 @@ class Controller {
             status: 'inactive'
         })
             .then(newUser => {
-                UserDetail.create({
+                theNewUser = newUser;
+                return UserDetail.create({
                     email: req.body.email,
                     fullName: req.body.fullName,
                     phoneNumber: req.body.phoneNumber,
@@ -62,14 +106,54 @@ class Controller {
                     createdAt: new Date(),
                     updatedAt: new Date,
                 });
-                Teacher.create({
+            })
+            .then(() => {
+                return Teacher.create({
                     fullName: req.body.fullName,
                     field: req.body.field,
                     yearOfExperience: req.body.yearOfExperience,
                     fee: req.body.fee,
-                    UserId: newUser.id,
+                    UserId: theNewUser.id,
                     createdAt: new Date(),
                     updatedAt: new Date,
+                });
+            })
+            .then((teacher) => {
+                // console.log(teacher);
+                return User.findByPk(teacher.UserId, {
+                    include: UserDetail
+                });
+            })
+            .then((user) => {
+                // console.log(user);
+                let rand = Math.floor((Math.random() * 999999) + 54);
+                // console.log(rand);
+
+                let identifier = user.id + '-' + rand;
+                let email = user.UserDetail.email;
+                // console.log(identifier);
+
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'pojandummy@gmail.com',
+                        pass: 'pojan123'
+                    }
+                });
+
+                var mailOptions = {
+                    from: 'pojandummy@gmail.com',
+                    to: `${email}`,
+                    subject: 'Sending Email using Node.js',
+                    html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
                 });
             })
             .then(() => {
@@ -78,6 +162,28 @@ class Controller {
             .catch(err => {
                 res.send(err);
             });
+    }
+
+
+    static verify(req, res) {
+        const identifier = req.params.identifier;
+        let id = +identifier.split('-')[0];
+
+
+        User.update({
+            status: 'active'
+        }, {
+            where: {
+                id: +id
+            }
+        })
+            .then(() => {
+                res.redirect('/login');
+            })
+            .catch(err => {
+                res.send(err);
+            });
+
     }
 
 

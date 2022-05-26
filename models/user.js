@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       // User.belongsToMany(models.Teacher, { through: models.UserTeacher });
       User.hasOne(models.UserTeacher, { foreignKey: "UserId" });
       User.hasOne(models.Teacher, { foreignKey: "UserId" });
+      User.hasOne(models.UserDetail, { foreignKey: "UserId" });
     }
   }
   User.init({

@@ -83,7 +83,7 @@ li {
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px;
 }
 
 form.search-bar {
