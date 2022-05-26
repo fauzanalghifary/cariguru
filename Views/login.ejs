@@ -7,16 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/register" method="post">
+    <% if (error) { %>
+     <p style="color:red"><%= error %> </p>
+    <% } %>
+    <form action="/login" method="post">
         <label>username</label>
         <input type="text" name="user"><br>
         <label>password</label>
         <input type="password" name="pass"><br>
-        <select name="role">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-        </select>
-        <input type="submit" value="Register">
+        <input type="submit" value="Login">
     </form>
 </body>
 </html>

@@ -16,8 +16,6 @@
     <div class="flex-row">
         <form class="flex-row" action="/findTeachers/" method="get">
 
-            <input type="text" name="userId" value="<%= userId %>" hidden>
-
             <select class="select <%= field ? 'button--active' : '' %>" name="field" id="field"
                 onchange="this.form.submit()">
                 <option selected disabled value="">---Choose Field---</option>
@@ -39,7 +37,7 @@
 
 
 
-        <a class="button " href="/findTeachers/?userId=<%= userId %> ">Clear Sorting and Filtering</a>
+        <a class="button " href="/findTeachers>Clear Sorting and Filtering</a>
     </div>
 
 
@@ -62,7 +60,7 @@
                 <td><%= el.yearOfExperience %> </td>
                 <td><%= formatRupiah(el.fee) %> </td>
                 <td>
-                    <a class="button button--red" href="/hireTeacher/<%= el.id %>?userId=<%= userId %>">Hire Teacher</a>
+                    <a class="button button--red" href="/hireTeacher/<%= el.id %>">Hire Teacher</a>
                 </td>
             </tr>
             <% }) %>
@@ -70,7 +68,7 @@
     </table>
 
 
-    <a class="button margin-top" href="/studentCard/<%= userId %> ">Back to My Student Card</a>
+    <a class="button margin-top" href="/studentCard">Back to My Student Card</a>
 
 </body>
 

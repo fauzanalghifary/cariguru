@@ -1,6 +1,7 @@
 const { Teacher, User, UserTeacher } = require('../models');
 const formatDate = require('../helpers/formatDate');
 const formatRupiah = require('../helpers/formatRupiah');
+const bcrypt = require('bcryptjs')
 
 class Controller {
 
@@ -9,20 +10,90 @@ class Controller {
         res.render('register')
     }
 
-    static studentCard(req, res) {
-        let userId = +req.params.userId;
-
-        User.findByPk(userId, {
-            include: Teacher
+    static insertUser(req, res){
+        User.create({
+            username: req.body.user,
+            password: req.body.pass,
+            role: req.body.role,
+            createdAt: new Date(),
+            updatedAt: new Date
         })
-            .then(user => {
-                // console.log(user.Teachers);
-                console.log(JSON.stringify(user, null, 2)); //array
-                // console.log(user.Teachers.UserTeacher); //undefined
-                // user.Teachers.forEach(el => {
-                // console.log(el.UserTeacher);
-                // });
-                res.render('studentCard', { user, formatDate });
+            .then(()=>res.redirect('/login'))
+            .catch(err=>{
+                res.send(err)
+            })
+    }
+
+    static login(req, res){
+        let error
+        if(req.query.error){
+            error = req.query.error
+        }
+        res.render('login', {error})
+    }
+
+    static sessionMake(req, res){
+        User.findOne({
+            where:{
+                username: req.body.user
+            }
+        })
+            .then(user=>{
+                if(user){
+                    if(bcrypt.compareSync(req.body.pass, user.password)){
+                        console.log(user.id)
+                        req.session.userId = user.id
+                        req.session.user = user.username
+                        req.session.role = user.role
+                        if(user.role==="student"){
+                            res.redirect(`/studentCard`)
+                        }else if(user.role==="teacher"){
+                            Teacher.findOne({
+                                where:{
+                                    UserId: user.Id
+                                }
+                            })
+                            .then(teacher=>{
+                                    console.log('masuk teacher')
+                                    req.session.teacherId = teacher.id
+                                    res.redirect(`/teacherCard`)
+                                })
+                                .catch(err=>{
+                                    res.send(err)
+                                })
+                        }
+                    }else{
+                        let error = 'Password salah'
+                        res.redirect(`/login?error=${error}`)
+                    }
+                }else{
+                    let error = 'User tidak terdaftar'
+                    res.redirect(`/login?error=${error}`)
+                }
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+    }
+
+    static studentCard(req, res) {
+        let UserId = req.session.userId;
+        let userTeachers;
+
+        UserTeacher.findAll({
+            include: Teacher,
+            where: {
+                UserId: UserId
+            }
+        })
+            .then(UserTeachers => {
+                // console.log(UserTeachers);
+                userTeachers = UserTeachers;
+                return User.findByPk(UserId);
+
+            })
+            .then((user) => {
+                res.render('studentCard', { userTeachers, user, formatDate });
             })
             .catch(err => {
                 // console.log(err);
@@ -30,12 +101,18 @@ class Controller {
             });
     }
 
+    static logout(req, res){
+        req.session.destroy()
+        res.redirect('login')
+    }
+
     static findTeachers(req, res) {
         // console.log(req.query);
         // let userId = +req.query.user;
 
         let option = {};
-        let { userId, field, sort } = req.query;
+        let { field, sort } = req.query;
+        let { user } = req.session
         // console.log(sort);
         if (field) {
             option.where = {
@@ -55,7 +132,7 @@ class Controller {
         Teacher.findAll(option)
             .then(teachers => {
                 // console.log(teachers);
-                res.render('findTeachers', { teachers, formatRupiah, userId, field, sort });
+                res.render('findTeachers', { teachers, formatRupiah, user, field, sort });
             })
             .catch(err => {
                 console.log(err);
@@ -64,7 +141,7 @@ class Controller {
     }
 
     static getHireTeacher(req, res) {
-        let teacherId = +req.params.teacherId;
+        let teacherId = +req.session.teacherId;
         let userId = req.query.userId;
 
         Teacher.findByPk(teacherId)
@@ -97,15 +174,23 @@ class Controller {
     }
 
     static teacherCard(req, res) {
-        let teacherId = +req.params.teacherId;
+        let userId = req.session.userId;
+        let userTeachers;
 
-        Teacher.findByPk(teacherId, {
-            include: User
+        UserTeacher.findAll({
+            include: User,
+            where: {
+                TeacherId: teacherId
+            },
+            order: [['id', 'ASC']]
         })
-            .then(teacher => {
-                // console.log(teacher.Users[1].UserTeacher);
-                // console.log(teacher.Users[0].UserTeacher.dataValues);
-                res.render('teacherCard', { teacher, formatDate });
+            .then(UserTeachers => {
+                userTeachers = UserTeachers;
+                return Teacher.findByPk(teacherId);
+            })
+            .then((teacher) => {
+                // console.log(userTeachers);
+                res.render('teacherCard', { userTeachers, teacher, formatDate });
             })
             .catch(err => {
                 console.log(err);

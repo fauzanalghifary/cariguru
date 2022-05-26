@@ -25,17 +25,17 @@
         </thead>
 
         <tbody>
-            <% teacher.Users.forEach((el,idx) => { %>
+            <% userTeachers.forEach((el,idx) => { %>
             <tr>
                 <td><%= idx+1 %> </td>
-                <td><%= el.username %> </td>
-                <td><%= formatDate(el.UserTeacher.date) %> </td>
-                <td><%= el.UserTeacher.status %> </td>
+                <td><%= el.User.username %> </td>
+                <td><%= formatDate(el.date) %> </td>
+                <td><%= el.status %> </td>
                 <td>
 
-                    <% if (el.UserTeacher.status === 'pending') { %>
-                    <a class="button" href="/approve/<%= el.UserTeacher.id %> ">Approve</a>
-                    <a class="button" href="/reject/<%= el.UserTeacher.id %>">Reject</a>
+                    <% if (el.status === 'pending') { %>
+                    <a class="button" href="/approve/<%= el.id %> ">Approve</a>
+                    <a class="button" href="/reject/<%= el.id %>">Reject</a>
                     <% } else { %>
                     <p>No action needed</p>
                     <% } %>

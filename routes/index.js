@@ -3,11 +3,21 @@ const Controller = require('../Controllers/controller');
 
 router.get('/',);
 router.get('/register', Controller.register);
-router.post('/register',);
-router.get('/login',);
-router.post('/login',);
+router.post('/register', Controller.insertUser);
+router.get('/login', Controller.login);
+router.post('/login', Controller.sessionMake);
 
-router.get('/studentCard/:userId', Controller.studentCard);
+router.use((req, res, next)=>{
+    if(!req.session.user){
+        let error = 'silahkan login terlebih dahulu'
+        res.redirect(`/login?error=${error}`)
+    }else{
+        next()
+    }
+})
+
+
+router.get('/studentCard', Controller.studentCard);
 router.get('/findTeachers', Controller.findTeachers);
 
 router.get('/hireTeacher/:teacherId', Controller.getHireTeacher);
