@@ -22,6 +22,7 @@ router.use((req, res, next) => {
 });
 
 
+router.get('/logout', Controller.logout)
 router.get('/studentCard', Controller.studentCard);
 router.get('/findTeachers', Controller.findTeachers);
 
