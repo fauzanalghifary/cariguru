@@ -6,7 +6,7 @@ const session = require('express-session');
 const path = require('path');
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '/views'));
+app.set('Views', path.join(__dirname, '/Views'));
 
 
 app.use(express.urlencoded({ extended: false }));
