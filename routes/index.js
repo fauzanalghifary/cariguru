@@ -11,14 +11,14 @@ router.post('/registerTeacher', Controller.insertTeacher);
 router.get('/login', Controller.login);
 router.post('/login', Controller.sessionMake);
 
-// router.use((req, res, next)=>{
-//     if(!req.session.user){
-//         let error = 'silahkan login terlebih dahulu'
-//         res.redirect(`/login?error=${error}`)
-//     }else{
-//         next()
-//     }
-// })
+router.use((req, res, next) => {
+    if (!req.session.user) {
+        let error = 'silahkan login terlebih dahulu';
+        res.redirect(`/login?error=${error}`);
+    } else {
+        next();
+    }
+});
 
 router.get('/verify/:identifier', Controller.verify);
 
