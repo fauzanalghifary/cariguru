@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/app.css">
+    <title>Teacher Card <%= teacher.fullName %> </title>
+</head>
+
+<body>
+
+
+    <h1 class="main-header">Teacher Card <%= teacher.fullName %></h1>
+
+
+    <table border="1">
+        <thead>
+            <th>No</th>
+            <th>Student Name</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </thead>
+
+        <tbody>
+            <% teacher.Users.forEach((el,idx) => { %>
+            <tr>
+                <td><%= idx+1 %> </td>
+                <td><%= el.username %> </td>
+                <td><%= formatDate(el.UserTeacher.date) %> </td>
+                <td><%= el.UserTeacher.status %> </td>
+                <td>
+
+                    <% if (el.UserTeacher.status === 'pending') { %>
+                    <a class="button" href="/approve/<%= el.UserTeacher.id %> ">Approve</a>
+                    <a class="button" href="/reject/<%= el.UserTeacher.id %>">Reject</a>
+                    <% } else { %>
+                    <p>No action needed</p>
+                    <% } %>
+
+
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+
+</body>
+
+</html>

@@ -2,15 +2,6 @@
 
 module.exports = {
   up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
     let data = [
       {
         fullName: 'Alberto Gilardino',
@@ -19,6 +10,7 @@ module.exports = {
         fee: 50000,
         createdAt: new Date(),
         updatedAt: new Date(),
+        UserId: 2
       },
       {
         fullName: 'Morientes',
@@ -27,6 +19,7 @@ module.exports = {
         fee: 100000,
         createdAt: new Date(),
         updatedAt: new Date(),
+        UserId: 3
       },
       {
         fullName: 'Aquilani',
@@ -35,18 +28,13 @@ module.exports = {
         fee: 40000,
         createdAt: new Date(),
         updatedAt: new Date(),
+        UserId: 4
       },
     ];
     return queryInterface.bulkInsert('Teachers', data);
   },
 
   down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
     return queryInterface.bulkDelete('Teachers');
   }
 };

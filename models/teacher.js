@@ -12,13 +12,15 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Teacher.belongsToMany(models.User, { through: models.UserTeacher });
+      Teacher.belongsTo(models.User, { foreignKey: "UserId" });
     }
   }
   Teacher.init({
     fullName: DataTypes.STRING,
     field: DataTypes.STRING,
     yearOfExperience: DataTypes.INTEGER,
-    fee: DataTypes.INTEGER
+    fee: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Teacher',

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/app.css">
+    <title>Hire Teacher</title>
+</head>
+
+<body>
+
+    <h1 class="main-header">Hire <%= teacher.fullName %></h1>
+
+    <form class="flex-row" action="/hireTeacher/<%= teacher.id %>?userId=<%= userId %>" method="post">
+
+        <input type="date" name="date">
+
+        <button class="button" type="submit">Hire</button>
+
+    </form>
+
+</body>
+
+</html>

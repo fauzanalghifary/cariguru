@@ -1,0 +1,135 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+.button,
+.select {
+    padding: 9px;
+    font-size: 16px;
+    color: white;
+    background-color: rgb(2, 175, 175);
+    text-decoration: none;
+    margin-bottom: 15px;
+    /* text-align: center; */
+}
+
+.button:hover {
+    background-color: black;
+    color: rgb(2, 175, 175);
+}
+
+.button--active,
+.button.button--active:hover {
+    background-color: purple;
+    color: white;
+}
+
+
+.button.button--yellow {
+    color: black;
+    background-color: yellow;
+}
+
+.button.button--red {
+    color: white;
+    background-color: red;
+}
+
+.button.button--red:hover {
+    color: rgb(240, 207, 207);
+    background-color: rgb(21, 85, 188);
+
+}
+
+.main-header {
+    background-color: rgb(126, 126, 227);
+    padding: 12px;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+table td,
+table th {
+    border: 1px solid black;
+    padding: 15px;
+}
+
+.red-color {
+    color: red;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+}
+
+li {
+    margin-bottom: 9px;
+    margin-top: 9px;
+}
+
+.description {
+    white-space: pre-line;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form.search-bar {
+    display: inline;
+}
+
+.search-bar {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.box {
+    display: inline;
+    width: 500px;
+    height: 40px;
+    margin-right: 6px;
+}
+
+.margin-top {
+    margin-top: 35px;
+}
+
+.margin-bottom {
+    margin-bottom: 15px;
+}
+
+.margin-right {
+    margin-right: 15px;
+}
+
+.warning {
+    font-size: 20px;
+}
+
+.red-color {
+    color: red;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

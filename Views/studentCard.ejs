@@ -5,34 +5,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Teachers</title>
+    <link rel="stylesheet" href="/app.css">
+    <title>Student Card <%= user.username %> </title>
 </head>
 
 <body>
 
-    <h1>All Teachers</h1>
+
+    <h1 class="main-header">Student Card <%= user.username %></h1>
+
+    <a class="button" href="/findTeachers?userId=<%= user.id %>">Find Teachers</a>
 
     <table border="1">
         <thead>
             <th>No</th>
-            <th>Full Name</th>
+            <th>Teacher Name</th>
             <th>Field</th>
-            <th>Years of Experience</th>
-            <th>Fee</th>
+            <th>Date</th>
+            <th>Status</th>
         </thead>
 
         <tbody>
-            <% teachers.forEach((el,idx) => { %>
+            <% user.Teachers.forEach((el,idx) => { %>
             <tr>
                 <td><%= idx+1 %> </td>
                 <td><%= el.fullName %> </td>
                 <td><%= el.field %> </td>
-                <td><%= el.yearOfExperience %> </td>
-                <td><%= el.fee %> </td>
+                <td><%= formatDate(el.UserTeacher.date) %> </td>
+                <td><%= el.UserTeacher.status %> </td>
             </tr>
             <% }) %>
         </tbody>
     </table>
+
 
 </body>
 

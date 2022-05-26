@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/app.css">
+    <title>All Teachers</title>
+</head>
+
+<body>
+
+    <h1 class="main-header">All Teachers</h1>
+
+    <div class="flex-row">
+        <form class="flex-row" action="/findTeachers/" method="get">
+
+            <input type="text" name="userId" value="<%= userId %>" hidden>
+
+            <select class="select <%= field ? 'button--active' : '' %>" name="field" id="field"
+                onchange="this.form.submit()">
+                <option selected disabled value="">---Choose Field---</option>
+                <option <%= field === 'Matematika' ? 'selected' : '' %> value="Matematika">Matematika</option>
+                <option <%= field === 'Fisika' ? 'selected' : '' %> value="Fisika">Fisika</option>
+                <option <%= field === 'Kimia' ? 'selected' : '' %> value="Kimia">Kimia</option>
+                <option <%= field === 'Biologi' ? 'selected' : '' %> value="Biologi">Biologi</option>
+            </select>
+
+            <input <%= sort === 'fee' ? 'checked' : '' %> type="radio" name="sort" id="sort1" value="fee" hidden
+                onclick="this.form.submit()">
+            <label class="button <%= sort === 'fee' ? 'button--active' : '' %>" for="sort1">Sort By Fee</label>
+
+            <input <%= sort === 'experience' ? 'checked' : '' %> type="radio" name="sort" id="sort2" value="experience"
+                hidden onclick="this.form.submit()">
+            <label class="button <%= sort === 'experience' ? 'button--active' : '' %>" for="sort2">Sort By
+                Experience</label>
+        </form>
+
+
+
+        <a class="button " href="/findTeachers/?userId=<%= userId %> ">Clear Sorting and Filtering</a>
+    </div>
+
+
+    <table border="1">
+        <thead>
+            <th>No</th>
+            <th>Full Name</th>
+            <th>Field</th>
+            <th>Years of Experience</th>
+            <th>Fee</th>
+            <th>Action</th>
+        </thead>
+
+        <tbody>
+            <% teachers.forEach((el,idx) => { %>
+            <tr>
+                <td><%= idx+1 %> </td>
+                <td><%= el.fullName %> </td>
+                <td><%= el.field %> </td>
+                <td><%= el.yearOfExperience %> </td>
+                <td><%= formatRupiah(el.fee) %> </td>
+                <td>
+                    <a class="button button--red" href="/hireTeacher/<%= el.id %>?userId=<%= userId %>">Hire Teacher</a>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+
+    <a class="button margin-top" href="/studentCard/<%= userId %> ">Back to My Student Card</a>
+
+</body>
+
+</html>

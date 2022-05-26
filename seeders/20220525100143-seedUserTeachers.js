@@ -2,33 +2,30 @@
 
 module.exports = {
   up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
     let data = [
       {
         rating: null,
-        UserId: 1,
+        status: 'pending',
+        date: new Date('27 May 2022'),
+        UserId: 5,
         TeacherId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         rating: null,
-        UserId: 1,
-        TeacherId: 2,
+        status: 'pending',
+        date: new Date('27 May 2022'),
+        UserId: 6,
+        TeacherId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         rating: null,
-        UserId: 2,
+        status: 'pending',
+        date: new Date('28 May 2022'),
+        UserId: 6,
         TeacherId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -39,12 +36,6 @@ module.exports = {
   },
 
   down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
     return queryInterface.bulkDelete('UserTeachers');
   }
 };
