@@ -7,6 +7,8 @@ const path = require('path');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
+
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use(session({
@@ -22,4 +24,4 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// hh
+// hhh
