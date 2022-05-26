@@ -153,9 +153,9 @@ class Controller {
                 });
 
                 var mailOptions = {
-                    from: 'pojandummy@gmail.com',
+                    from: 'admin@cariguru.com',
                     to: `${email}`,
-                    subject: 'Sending Email using Node.js',
+                    subject: 'Verifikasi CariGuru',
                     html: `Press <a href=http://localhost:3000/verify/${identifier}>this link</a> to verify your email`
                 };
 
