@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         isDateValid(value) {
           // console.log(value);
           if (value) {
-            let dateNow = new Date().getDate();
-            let dateAppointment = value.getDate();
+            let dateNow = new Date();
+            let dateAppointment = value;
             if (dateAppointment < dateNow) {
               // console.log('here');
               throw new Error('Date is already passed');
